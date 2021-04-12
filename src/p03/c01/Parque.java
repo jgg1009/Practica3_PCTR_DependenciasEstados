@@ -18,7 +18,7 @@ public class Parque implements IParque{
 
 
 	@Override
-	public void entrarAlParque(String puerta){		// TODO
+	public synchronized void entrarAlParque(String puerta){		// TODO
 		
 		// Si no hay entradas por esa puerta, inicializamos
 		if (contadoresPersonasPuerta.get(puerta) == null){
@@ -35,31 +35,35 @@ public class Parque implements IParque{
 		// Imprimimos el estado del parque
 		imprimirInfo(puerta, "Entrada");
 		
-		sumarContadoresPuerta();
+		this.notifyAll();
 		
 		checkInvariante();
 		
 	}
 	
 	@Override
-	public void salirDelParque(String puerta) { 	// TODO
+	public synchronized void salirDelParque(String puerta) { 	// TODO
 		
+		if (contadoresPersonasPuerta.get(puerta) == null){
+			contadoresPersonasPuerta.put(puerta, 0);
+		}
 		comprobarAntesDeSalir();
 		
 		contadorPersonasTotales--;		
 		contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta)-1);
 		
 		// Imprimimos el estado del parque
+		checkInvariante();
+		sumarContadoresPuerta();
 		imprimirInfo(puerta, "Salida");
 		
-		sumarContadoresPuerta();
+		this.notifyAll();;
 		
-		checkInvariante();
 		
 	}
 	
 	
-	private void imprimirInfo (String puerta, String movimiento){
+	private synchronized void imprimirInfo (String puerta, String movimiento){
 		System.out.println(movimiento + " por puerta " + puerta);
 		System.out.println("--> Personas en el parque " + contadorPersonasTotales); //+ " tiempo medio de estancia: "  + tmedio);
 		
@@ -70,7 +74,7 @@ public class Parque implements IParque{
 		System.out.println(" ");
 	}
 	
-	private int sumarContadoresPuerta() {
+	private  synchronized int sumarContadoresPuerta() {
 		int sumaContadoresPuerta = 0;
 			Enumeration<Integer> iterPuertas = contadoresPersonasPuerta.elements();
 			while (iterPuertas.hasMoreElements()) {
@@ -79,22 +83,30 @@ public class Parque implements IParque{
 		return sumaContadoresPuerta;
 	}
 	
-	protected void checkInvariante() {
+	protected  synchronized void checkInvariante() {
 		assert sumarContadoresPuerta() == contadorPersonasTotales : "INV: La suma de contadores de las puertas debe ser igual al valor del contador del parte";
 		assert contadorPersonasTotales <= aforo : "Se ha superado el aforo"; 
-		assert contadorPersonasTotales <= 0 :"Descordinacion en salidas";
+		assert contadorPersonasTotales >= 0 :"Descordinacion en salidas";
 	}
 
-	protected void comprobarAntesDeEntrar(){	// TODO
+	protected  synchronized void comprobarAntesDeEntrar() {	// TODO
 		while (contadorPersonasTotales==aforo) {
-			 Object.wait();
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} 
 		}
 	}
 
-	protected void comprobarAntesDeSalir(){		// TODO
-		//
-		// TODO
-		//
+	protected  synchronized void comprobarAntesDeSalir(){		// TODO
+		while (contadorPersonasTotales==0) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} 
+		}
 	}
 
 
