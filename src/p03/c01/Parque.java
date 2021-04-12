@@ -25,7 +25,6 @@ public class Parque implements IParque{
 			contadoresPersonasPuerta.put(puerta, 0);
 		}
 		
-		// TODO
 		comprobarAntesDeEntrar();
 				
 		
@@ -36,16 +35,26 @@ public class Parque implements IParque{
 		// Imprimimos el estado del parque
 		imprimirInfo(puerta, "Entrada");
 		
-		// TODO
+		sumarContadoresPuerta();
 		
-		
-		// TODO
+		checkInvariante();
 		
 	}
 	
 	@Override
-	public void salirDelParque(String puerta) {
+	public void salirDelParque(String puerta) { 	// TODO
 		
+		comprobarAntesDeSalir();
+		
+		contadorPersonasTotales--;		
+		contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta)-1);
+		
+		// Imprimimos el estado del parque
+		imprimirInfo(puerta, "Salida");
+		
+		sumarContadoresPuerta();
+		
+		checkInvariante();
 		
 	}
 	
@@ -72,14 +81,14 @@ public class Parque implements IParque{
 	
 	protected void checkInvariante() {
 		assert sumarContadoresPuerta() == contadorPersonasTotales : "INV: La suma de contadores de las puertas debe ser igual al valor del contador del parte";
-		// TODO 
-		// TODO
+		assert contadorPersonasTotales <= aforo : "Se ha superado el aforo"; 
+		assert contadorPersonasTotales <= 0 :"Descordinacion en salidas";
 	}
 
 	protected void comprobarAntesDeEntrar(){	// TODO
-		//
-		// TODO
-		//
+		while (contadorPersonasTotales==aforo) {
+			 Object.wait();
+		}
 	}
 
 	protected void comprobarAntesDeSalir(){		// TODO
