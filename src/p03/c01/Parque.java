@@ -6,6 +6,8 @@ import java.util.Hashtable;
 public class Parque implements IParque{
 
 	// TODO 
+	
+	//Tamu eres un mono
 	private int contadorPersonasTotales;
 	private Hashtable<String, Integer> contadoresPersonasPuerta;
 	
