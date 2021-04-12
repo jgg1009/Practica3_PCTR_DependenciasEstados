@@ -5,17 +5,15 @@ import java.util.Hashtable;
 
 public class Parque implements IParque{
 
-	// TODO 
-	
-	//Juanlu eres un mono
+	private int aforo;
 	private int contadorPersonasTotales;
 	private Hashtable<String, Integer> contadoresPersonasPuerta;
 	
 	
-	public Parque() {	// TODO
+	public Parque(int aforo) {	
 		contadorPersonasTotales = 0;
 		contadoresPersonasPuerta = new Hashtable<String, Integer>();
-		// TODO
+		this.aforo=aforo;
 	}
 
 
@@ -28,6 +26,7 @@ public class Parque implements IParque{
 		}
 		
 		// TODO
+		comprobarAntesDeEntrar();
 				
 		
 		// Aumentamos el contador total y el individual
@@ -44,9 +43,11 @@ public class Parque implements IParque{
 		
 	}
 	
-	// 
-	// TODO Método salirDelParque
-	//
+	@Override
+	public void salirDelParque(String puerta) {
+		
+		
+	}
 	
 	
 	private void imprimirInfo (String puerta, String movimiento){
@@ -86,6 +87,9 @@ public class Parque implements IParque{
 		// TODO
 		//
 	}
+
+
+	
 
 
 }
