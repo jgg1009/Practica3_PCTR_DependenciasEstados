@@ -53,8 +53,9 @@ public class Parque implements IParque{
 		contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta)-1);
 		
 		// Imprimimos el estado del parque
-		checkInvariante();
+		
 		sumarContadoresPuerta();
+		checkInvariante();
 		imprimirInfo(puerta, "Salida");
 		
 		this.notifyAll();;
