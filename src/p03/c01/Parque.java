@@ -18,7 +18,7 @@ public class Parque implements IParque{
 
 
 	@Override
-	public synchronized void entrarAlParque(String puerta){		// TODO
+	public synchronized void entrarAlParque(String puerta){		
 		
 		// Si no hay entradas por esa puerta, inicializamos
 		if (contadoresPersonasPuerta.get(puerta) == null){
@@ -75,7 +75,7 @@ public class Parque implements IParque{
 		System.out.println(" ");
 	}
 	
-	private  synchronized int sumarContadoresPuerta() {
+	private int sumarContadoresPuerta() {
 		int sumaContadoresPuerta = 0;
 			Enumeration<Integer> iterPuertas = contadoresPersonasPuerta.elements();
 			while (iterPuertas.hasMoreElements()) {
@@ -84,13 +84,13 @@ public class Parque implements IParque{
 		return sumaContadoresPuerta;
 	}
 	
-	protected  synchronized void checkInvariante() {
+	protected synchronized void checkInvariante() {
 		assert sumarContadoresPuerta() == contadorPersonasTotales : "INV: La suma de contadores de las puertas debe ser igual al valor del contador del parte";
 		assert contadorPersonasTotales <= aforo : "Se ha superado el aforo"; 
 		assert contadorPersonasTotales >= 0 :"Descordinacion en salidas";
 	}
 
-	protected  synchronized void comprobarAntesDeEntrar() {	// TODO
+	protected void comprobarAntesDeEntrar() {	// TODO
 		while (contadorPersonasTotales==aforo) {
 			try {
 				this.wait();
@@ -100,7 +100,7 @@ public class Parque implements IParque{
 		}
 	}
 
-	protected  synchronized void comprobarAntesDeSalir(){		// TODO
+	protected void comprobarAntesDeSalir(){		// TODO
 		while (contadorPersonasTotales==0) {
 			try {
 				this.wait();
