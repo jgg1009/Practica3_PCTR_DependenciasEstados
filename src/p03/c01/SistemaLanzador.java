@@ -1,5 +1,11 @@
 package src.p03.c01;
 
+/**
+ * Clase se encarga de lanzar los hilos instanciado las distintas puertas.
+ * 
+ * @author Juan Luis G.G && Alejandro Ortega Martinez
+ *
+ */
 public class SistemaLanzador {
 	public static void main(String[] args) {
 		final int AFORO = 50;
